@@ -2,4 +2,11 @@
 source/
 assets/sections/*
 # code
+node_modules
 docker-volumes/
+*.log
+.DS_Store
+dist
+build
+packs
+local-packs
