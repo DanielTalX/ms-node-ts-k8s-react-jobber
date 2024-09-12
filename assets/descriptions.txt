@@ -3,3 +3,12 @@ Section 2: Basics of Microservices
 Section 3: Project Architecture
 Section 4: Tools Setup with Docker Compose
 Section 5: Microservices Helper Library
+    - interfaces
+    - cloudinary upload methods
+    - error handlers
+    - gateway middleware
+    - logerr
+    - helpers files
+Section 6: Notification Microservice
+    - health route
+    - elastic search connection

@@ -2,13 +2,17 @@
   "name": "@danieltalx/jobber-shared",
   "version": "0.0.1",
   "description": "Helpers library for Jobber ms app",
-  "main": "./build/index.js",
-  "types": "./src/index.d.ts",
+  "main": "./build/src/index.js",
+  "types": "./build/src/index.d.ts",
+  "files": [
+    "build"
+  ],
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "build": "npm run build:cjs && npm run build:esm && tsc --outDir build/src && node scripts/build-package.js",
+    "build": "rm -rf build && tsc --outDir build/src",
+    "build-old": "npm run build:cjs && npm run build:esm && tsc --outDir build/src && node scripts/build-package.js",
     "build:cjs": "NODE_ENV=production BABEL_ENV=cjs babel src --presets=./scripts/babel-preset.js --extensions .ts,.tsx --ignore src/**/*.specs.tsx --out-dir build/cjs --source-maps",
     "build:esm": "NODE_ENV=production BABEL_ENV=esm babel src --presets=./scripts/babel-preset.js --extensions .ts,.tsx --ignore src/**/*.specs.tsx --out-dir build/esm --source-maps",
     "clean": "rm -rf node_modules && rm -rf dist && npm i && npm run build",
@@ -17,7 +21,8 @@
     "windows-build:esm": "cross-env NODE_ENV=production BABEL_ENV=esm babel src --presets=./scripts/babel-preset.js --extensions .ts,.tsx --ignore src/**/*.specs.tsx --out-dir build/esm --source-maps",
     "global_git": "npm config set registry https://registry.npmjs.org/",
     "pub": "npm publish",
-    "pack": "rm -rf build/* && rm -rf packs/* && npm run build && cd packs && npm pack ../ && cd .."
+    "pack": "rm -rf build/* && rm -rf packs/* && npm run build && cd packs && npm pack ../ && cd ..",
+    "share-pack": "sh ./scripts/share-pack.sh"
   },
   "prettier": {
     "printWidth": 80,
@@ -39,12 +44,8 @@
   },
   "exports": {
     ".": {
-      "import": "./src/index.js",
-      "require": "./src/index.js"
-    },
-    "./icons": {
-      "import": "./esm/icons/index.js",
-      "require": "./cjs/icons/index.js"
+      "import": "./build/src/index.js",
+      "require": "./build/src/index.js"
     }
   },
   "dependencies": {
