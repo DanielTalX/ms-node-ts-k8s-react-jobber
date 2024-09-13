@@ -1,7 +1,7 @@
 import 'express-async-errors';
 import http from 'http';
 
-import { winstonLogger } from '@danieltalx/jobber-shared';
+import { IEmailMessageDetails, winstonLogger } from '@danieltalx/jobber-shared';
 import { Logger } from 'winston';
 import { config } from '@notifications/config';
 import { Application } from 'express';
@@ -9,6 +9,7 @@ import { healthRoutes } from '@notifications/routes';
 import { checkConnection } from '@notifications/elasticsearch';
 import { createQueueConnection } from './queues/connection';
 import { consumeAuthEmailMessages, consumeOrderEmailMessages } from './queues/email.consumer';
+import { Channel } from 'amqplib';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notificationServer', 'debug');
 
@@ -25,6 +26,8 @@ async function startQueues(): Promise<void> {
   const emailChannel = await createQueueConnection();
   await consumeAuthEmailMessages(emailChannel);
   await consumeOrderEmailMessages(emailChannel);
+
+  if(false) await testSendEmail(emailChannel);
 }
 
 function startElasticSearch(): void {
@@ -41,4 +44,16 @@ function startServer(app: Application): void {
   } catch (error) {
     log.log('error', 'NotificationService startServer() method:', error);
   }
+}
+
+async function testSendEmail(emailChannel: Channel) {
+  const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=123234whqhqhehwhghe`;
+  const messageDetails: IEmailMessageDetails = {
+    receiverEmail: config.SENDER_EMAIL,
+    verifyLink: verificationLink,
+    template: 'verifyEmail'
+  };
+  await emailChannel.assertExchange('jobber-email-notification', 'direct');
+  const message = JSON. stringify(messageDetails);
+  emailChannel.publish('jobber-email-notification', 'auth-email', Buffer. from(message));
 }

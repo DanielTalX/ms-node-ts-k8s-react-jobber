@@ -1,7 +1,8 @@
 import { config } from '@notifications/config';
-import { winstonLogger } from '@danieltalx/jobber-shared';
+import { IEmailLocals, winstonLogger } from '@danieltalx/jobber-shared';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Logger } from 'winston';
+import { sendEmail } from './mail.transport';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'emailConsumer', 'debug');
 
@@ -19,9 +20,17 @@ async function consumeAuthEmailMessages(channel: Channel): Promise<void> {
     await channel.bindQueue(jobberQueue.queue, exchangeName, routingKey);
 
     channel.consume(jobberQueue.queue, async (msg: ConsumeMessage | null) => {
-      log.info(`consumeAuthEmailMessages - consume message: ${msg}`)
+      log.info(`consumeAuthEmailMessages - consume message: ${msg!.content.toString()}`);
       const data = JSON.parse(msg!.content.toString());
-      console.log("data = ", data);
+      const { receiverEmail, username, verifyLink, resetLink, template } = data;
+      const locals: IEmailLocals = {
+        appLink: config.CLIENT_URL,
+        appIcon: config.APP_ICON_URL,
+        username,
+        verifyLink,
+        resetLink,
+      };
+      await sendEmail(template, receiverEmail, locals);
       channel.ack(msg!);
     });
   } catch (error) {
@@ -39,9 +48,66 @@ async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
     await channel.bindQueue(jobberQueue.queue, exchangeName, routingKey);
     
     channel.consume(jobberQueue.queue, async (msg: ConsumeMessage | null) => {
-      log.info(`consumeAuthEmailMessages - consume message: ${msg}`);
+      log.info(`consumeOrderEmailMessages - consume message: ${msg!.content.toString()}`);
       const data = JSON.parse(msg!.content.toString());
-      console.log("data = ", data);
+      const {
+        receiverEmail,
+        username,
+        template,
+        sender,
+        offerLink,
+        amount,
+        buyerUsername,
+        sellerUsername,
+        title,
+        description,
+        deliveryDays,
+        orderId,
+        orderDue,
+        requirements,
+        orderUrl,
+        originalDate,
+        newDate,
+        reason,
+        subject,
+        header,
+        type,
+        message,
+        serviceFee,
+        total
+      } = data
+      const locals: IEmailLocals = {
+        appLink: config.CLIENT_URL,
+        appIcon: config.APP_ICON_URL,
+        username,
+        sender,
+        offerLink,
+        amount,
+        buyerUsername,
+        sellerUsername,
+        title,
+        description,
+        deliveryDays,
+        orderId,
+        orderDue,
+        requirements,
+        orderUrl,
+        originalDate,
+        newDate,
+        reason,
+        subject,
+        header,
+        type,
+        message,
+        serviceFee,
+        total
+      };
+      if (template === 'orderPlaced') {
+        await sendEmail('orderPlaced', receiverEmail, locals);
+        await sendEmail('orderReceipt', receiverEmail, locals);
+      } else {
+        await sendEmail(template, receiverEmail, locals);
+      }
       channel.ack(msg!);
     });
   } catch (error) {
