@@ -7,20 +7,24 @@ import { config } from '@notifications/config';
 import { Application } from 'express';
 import { healthRoutes } from '@notifications/routes';
 import { checkConnection } from '@notifications/elasticsearch';
+import { createQueueConnection } from './queues/connection';
+import { consumeAuthEmailMessages, consumeOrderEmailMessages } from './queues/email.consumer';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notificationServer', 'debug');
 
-export function start(app: Application): void {
+export async function start(app: Application): Promise<void> {
   // http://localhost:4001/notificaiton-roues - only for healthRoutes
   // http://localhost:4001/api/v1/gateway/notificaiton-roues - all the others from gateway
   startServer(app);
   app.use('', healthRoutes());
-  startQueues();
   startElasticSearch();
+  await startQueues();
 }
 
 async function startQueues(): Promise<void> {
-  
+  const emailChannel = await createQueueConnection();
+  await consumeAuthEmailMessages(emailChannel);
+  await consumeOrderEmailMessages(emailChannel);
 }
 
 function startElasticSearch(): void {

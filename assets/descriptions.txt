@@ -12,3 +12,5 @@ Section 5: Microservices Helper Library
 Section 6: Notification Microservice
     - health route
     - elastic search connection
+    - Rabbitmq
+    - Auth email & Order email consumers

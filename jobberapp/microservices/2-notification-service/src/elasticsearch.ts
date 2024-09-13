@@ -12,16 +12,22 @@ const elasticSearchClient = new Client({
 });
 
 export async function checkConnection(): Promise<void> {
-  let isConnected = false;
-  while (!isConnected) {
+  let retryNum = 0;
+  while (retryNum < 5) {
     try {
       const health: ClusterHealthResponse = await elasticSearchClient.cluster.health({});
       log.info(`NotificationService Elasticsearch health status - ${health.status}`);
-      isConnected = true;
+      return;
     } catch (error) {
-      log.error('Connection to Elasticsearch failed. Retrying...');
+      retryNum++;
       log.log('error', 'NotificationService checkConnection() method:', error);
-      await new Promise(resolve => setTimeout(resolve, 2000)); // 2 seconds delay between retries
+      log.error(`Connection to Elasticsearch failed, retry num: ${retryNum}/5.`);
+      if(retryNum >= 5){
+        throw error;
+      }
+      else {
+        await new Promise(resolve => setTimeout(resolve, 2000)); // 2 seconds delay between retries
+      }
     }
   }
 }
