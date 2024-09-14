@@ -18,3 +18,9 @@ Section 6: Notification Microservice
     - test with jest
     - Dockerfile
     - pm2
+Section 7: API Gateway Service
+    - OOD Architecture
+    - securityMiddleware
+    - standardMiddleware
+    - ElasticSearch
+    - errorHandler

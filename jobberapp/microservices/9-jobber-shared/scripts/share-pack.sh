@@ -4,6 +4,7 @@ echo start share-pack
 current_pwd=$pwd
 ms_paths=$(pwd | grep -o ".*microservices")
 ms_names=(
+    '1-gateway-service'
     '2-notification-service'
 )
 lib_name='9-jobber-shared'
