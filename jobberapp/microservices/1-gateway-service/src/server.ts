@@ -13,6 +13,7 @@ import { StatusCodes } from 'http-status-codes';
 import { config } from '@gateway/config';
 import { elasticSearch } from '@gateway/elasticsearch';
 import { isAxiosError } from 'axios';
+import { appRoutes } from './routes';
 
 const DEFAULT_ERROR_CODE = 500;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'apiGatewayServer', 'debug');
@@ -38,7 +39,7 @@ export class GatewayServer {
     app.use(
       cookieSession({
         name: 'session',
-        keys: [`${config.SECRET_KEY_ONE}`, `${config.SECRET_KEY_TWO}`],
+        keys: [config.SECRET_KEY_ONE, config.SECRET_KEY_TWO],
         maxAge: 24 * 7 * 3600000,
         secure: config.NODE_ENV !== 'development',
         ...(config.NODE_ENV !== 'development' && {
@@ -62,8 +63,8 @@ export class GatewayServer {
     app.use(urlencoded({ extended: true, limit: '200mb' }));
   }
 
-  private routesMiddleware(_app: Application): void {
-    
+  private routesMiddleware(app: Application): void {
+    appRoutes(app);
   }
 
   private startElasticSearch(): void {

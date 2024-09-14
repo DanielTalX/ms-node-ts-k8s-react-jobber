@@ -16,7 +16,7 @@ Section 6: Notification Microservice
     - Auth email & Order email consumers
     - Mail Transport & Email templates 
     - test with jest
-    - Dockerfile
+    - Dockerfile & docker-compose
     - pm2
 Section 7: API Gateway Service
     - OOD Architecture
@@ -24,3 +24,7 @@ Section 7: API Gateway Service
     - standardMiddleware
     - ElasticSearch
     - errorHandler
+    - health route
+    - AuthenticationMiddleware
+    - Axios Service
+    - Dockerfile & docker-compose
