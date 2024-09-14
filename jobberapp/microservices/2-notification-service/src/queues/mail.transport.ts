@@ -10,7 +10,7 @@ async function sendEmail(template: string, receiverEmail: string, locals: IEmail
     emailTemplates(template, receiverEmail, locals);
     log.info('Email sent successfully.');
   } catch (error) {
-    log.log('error', 'NotificationService MailTransport sendEmail() method error:', error);
+    log.log('error', `${config.MS_NAME} MailTransport sendEmail() method error:`, error);
   }
 }
 

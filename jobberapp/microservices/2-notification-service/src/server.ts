@@ -37,12 +37,12 @@ function startElasticSearch(): void {
 function startServer(app: Application): void {
   try {
     const httpServer: http.Server = new http.Server(app);
-    log.info(`Worker with process id of ${process.pid} on notification server has started`);
+    log.info(`Worker with process id of ${process.pid} on ${config.MS_NAME} has started`);
     httpServer.listen(config.SERVER_PORT, () => {
-      log.info(`Notification server running on port ${config.SERVER_PORT}`);
+      log.info(`${config.MS_NAME} running on port ${config.SERVER_PORT}`);
     });
   } catch (error) {
-    log.log('error', 'NotificationService startServer() method:', error);
+    log.log('error', `${config.MS_NAME} startServer() method:`, error);
   }
 }
 

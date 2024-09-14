@@ -13,7 +13,7 @@ async function createQueueConnection(): Promise<Channel> {
       retryNum++;
       await new Promise(resolve => setTimeout(resolve, 1000)); // 1 seconds delay between retries
   }
-  throw new ServerError("NotificationService createQueueConnection() method error: failed create connection", "NotificationService");
+  throw new ServerError(`${config.MS_NAME} createQueueConnection() method error: failed create connection`, config.MS_NAME);
 }
 
 // https://www.npmjs.com/package/amqplib
@@ -21,11 +21,11 @@ async function createQueueConnectionInner(): Promise<Channel | undefined> {
   try {
     const connection: Connection = await client.connect(`${config.RABBITMQ_ENDPOINT}`);
     const channel: Channel = await connection.createChannel();
-    log.info('Notification server connected to queue successfully...');
+    log.info(`${config.MS_NAME} connected to queue successfully...`);
     closeConnection(channel, connection);
     return channel;
   } catch (error) {
-    log.log('error', 'NotificationService error createQueueConnectionInner() method:', error);
+    log.log('error', `${config.MS_NAME} error createQueueConnectionInner() method:`, error);
     return undefined;
   }
 }

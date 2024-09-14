@@ -58,14 +58,16 @@ services:
     container_name: rabbitmq_container
     image: rabbitmq:3.13-rc-management-alpine
     restart: always
-    ## environment:
-      ## - RABBITMQ_DEFAULT_USER=jobber
-      ## - RABBITMQ_DEFAULT_PASS=jobberpass
+    environment:
+      - RABBITMQ_DEFAULT_USER=jobber
+      - RABBITMQ_DEFAULT_PASS=jobberpass
     ports:
       # AMQP protocol port
       - '5672:5672'
       # Management UI
       - '15672:15672'
+    networks:
+      - elastic
 
   elasticsearch:
     # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_start_a_single_node_cluster
@@ -112,6 +114,37 @@ services:
       - ./kibana.yml/:/usr/share/kibana/config/kibana.yml:ro
     depends_on: 
       - elasticsearch
+  
+  notifications:
+    container_name: notification_container
+    build:
+      context: ../microservices/2-notification-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4001:4001
+    env_file: ../microservices/2-notification-service/.env
+    environment:
+      - MS_NAME=NotificationMS
+      - ENABLE_APM=0
+      - NODE_ENV=development
+      - SERVER_PORT=4001
+      - CLIENT_URL=http://localhost:3000
+      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
+      - SMTP_HOST=smtp.ethereal.email
+      - SMTP_PORT=587
+      - SENDER_EMAIL=
+      - SENDER_EMAIL_PASSWORD=
+      - SMTP_ENCRYPTION=null
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
+      - ELASTIC_APM_SERVER_URL=http://localhost:8200
+      - ELASTIC_APM_SECRET_TOKEN=
+      - APP_ICON_URL=https://i.ibb.co/Kyp2m0t/cover.png
+    depends_on:
+      - elasticsearch
+      - rabbitmq
+    networks:
+      - elastic
 
 networks:
   elastic:

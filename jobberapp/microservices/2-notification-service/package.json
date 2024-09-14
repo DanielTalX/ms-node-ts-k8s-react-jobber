@@ -5,9 +5,17 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon -r tsconfig-paths/register src/app.ts | pino-pretty -c",
-    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "clean": "rm -rf build && rm -rf node_modules && npm i && npm run i-local-packs && npm run build",
-    "i-local-packs": "for file in ./local-packs/danieltalx*.tgz; do npm i $file; done"
+    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json && ts-node tools/copyAssets.ts",
+    "clean": "rm -rf build && rm -rf node_modules && npm i && npm run build",
+    "i-local-packs": "for file in ./local-packs/danieltalx*.tgz; do npm i $file; done",
+    "test": "jest --coverage=true -w=1 --forceExit --detectOpenHandles --watchAll=false",
+    "start": "pm2 start ./build/src/app.js -i 2 --attach --watch | pino-pretty -c",
+    "stop": "pm2 stop all",
+    "delete": "pm2 delete all",
+    "lint:check": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' --fix",
+    "prettier:check": "prettier --check 'src/**/*.{ts,json}'",
+    "prettier:fix": "prettier --write 'src/**/*.{ts,json}'"
   },
   "keywords": [],
   "author": "",

@@ -15,3 +15,6 @@ Section 6: Notification Microservice
     - Rabbitmq
     - Auth email & Order email consumers
     - Mail Transport & Email templates 
+    - test with jest
+    - Dockerfile
+    - pm2
