@@ -28,3 +28,8 @@ Section 7: API Gateway Service
     - AuthenticationMiddleware
     - Axios Service
     - Dockerfile & docker-compose
+Section 8: Authentication Service
+    - ElasticSearch
+    - securityMiddleware, standardMiddleware, errorHandler
+    - Sequelize - MySql database connection
+        - https://www.npmjs.com/package/sequelize

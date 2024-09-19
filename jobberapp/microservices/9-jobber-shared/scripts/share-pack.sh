@@ -6,6 +6,7 @@ ms_paths=$(pwd | grep -o ".*microservices")
 ms_names=(
     '1-gateway-service'
     '2-notification-service'
+    '3-auth-service'
 )
 lib_name='9-jobber-shared'
 lib_pack_name=danieltalx-jobber-shared
