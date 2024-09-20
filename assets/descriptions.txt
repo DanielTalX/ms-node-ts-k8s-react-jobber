@@ -33,3 +33,7 @@ Section 8: Authentication Service
     - securityMiddleware, standardMiddleware, errorHandler
     - Sequelize - MySql database connection
         - https://www.npmjs.com/package/sequelize
+    - schemas with Joi 
+    - Auth Table using Sequelize (Model, Indexes, prototype)
+    - Rabbitmq
+    - Auth Service
