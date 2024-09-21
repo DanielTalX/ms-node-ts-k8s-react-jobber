@@ -1,12 +1,14 @@
+import { winstonLogger } from '@danieltalx/jobber-shared';
 import dotenv from 'dotenv';
+import { Logger } from 'winston';
 
 dotenv.config({});
 
 class Config {
     MS_NAME = process.env.MS_NAME || 'GatewayMS';
     SERVER_PORT = process.env.SERVER_PORT || 4000;
-    JWT_TOKEN = process.env.JWT_TOKEN || '1234';
-    GATEWAY_JWT_TOKEN = process.env.GATEWAY_JWT_TOKEN || '1234';
+    JWT_TOKEN = process.env.JWT_TOKEN || '';
+    GATEWAY_JWT_TOKEN = process.env.GATEWAY_JWT_TOKEN || '';
     NODE_ENV = process.env.NODE_ENV || '';
     SECRET_KEY_ONE = process.env.SECRET_KEY_ONE || '';
     SECRET_KEY_TWO = process.env.SECRET_KEY_TWO || '';
@@ -23,3 +25,6 @@ class Config {
 }
 
 export const config: Config = new Config();
+
+const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'GatewayMSConfig', 'debug');
+log.info(`${config.MS_NAME} config = ${JSON.stringify(config)}`);

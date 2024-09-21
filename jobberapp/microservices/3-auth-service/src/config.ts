@@ -17,6 +17,7 @@ class Config {
   public CLOUD_NAME = process.env.CLOUD_NAME || '';
   public CLOUD_API_KEY = process.env.CLOUD_API_KEY || '';
   public CLOUD_API_SECRET = process.env.CLOUD_API_SECRET || '';
+  public USE_CLOUDINARY = process.env.USE_CLOUDINARY !== 'false';
   public API_GATEWAY_URL = process.env.API_GATEWAY_URL || '';
   public CLIENT_URL = process.env.CLIENT_URL || '';
   public ELASTIC_SEARCH_URL = process.env.ELASTIC_SEARCH_URL || '';

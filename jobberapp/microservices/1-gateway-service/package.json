@@ -43,7 +43,7 @@
     "tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
-    "@danieltalx/jobber-shared": "file:local-packs/danieltalx-jobber-shared-0.0.1.tgz",
+    "@danieltalx/jobber-shared": "file:local-packs/danieltalx-jobber-shared-0.0.2.tgz",
     "@elastic/elasticsearch": "^8.10.0",
     "@socket.io/redis-adapter": "^8.2.1",
     "axios": "^1.6.0",
