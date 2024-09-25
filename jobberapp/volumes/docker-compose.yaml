@@ -38,6 +38,8 @@ services:
       - '3306:3306'
     volumes:
       - ./docker-volumes/mysql:/var/lib/mysql
+    networks:
+      - elastic
   
   postgres:
     # https://hub.docker.com/_/postgres
@@ -165,7 +167,7 @@ services:
       - SECRET_KEY_ONE=zx032c5c3cfc37938ae6dd43d3a3ec7834
       - SECRET_KEY_TWO=zyd66e377018c0bc0b5772bbc9b131e6d9
       - CLIENT_URL=http://localhost:3000
-      - AUTH_BASE_URL=http://localhost:4002
+      - AUTH_BASE_URL=http://auth_container:4002
       - USERS_BASE_URL=http://localhost:4003
       - GIG_BASE_URL=http://localhost:4004
       - MESSAGE_BASE_URL=http://localhost:4005
@@ -178,6 +180,39 @@ services:
     depends_on:
       - elasticsearch
       - redis
+    networks:
+      - elastic
+
+  auth:
+    container_name: auth_container
+    build:
+      context: ../microservices/3-auth-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4002:4002
+    env_file: ../microservices/3-auth-service/.env
+    environment:
+      - MS_NAME=AuthMS
+      - SERVER_PORT=4002
+      - NODE_ENV=development
+      - ENABLE_APM=0
+      - GATEWAY_JWT_TOKEN=ab7637698c4c8eb4ca24a82c69eb97f396
+      - JWT_TOKEN=ac476502cec37af7510e1135a6d5135158
+      - CLOUD_NAME=
+      - CLOUD_API_KEY=
+      - CLOUD_API_SECRET=
+      - USE_CLOUDINARY=false
+      - API_GATEWAY_URL=http://gateway_container:4000
+      - CLIENT_URL=http://localhost:3000
+      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
+      - MYSQL_DB=mysql://jobber:api@mysql_container:3306/jobber_auth
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
+      - ELASTIC_APM_SERVER_URL=http://localhost:8200
+      - ELASTIC_APM_SECRET_TOKEN=
+    depends_on:
+      - elasticsearch
+      - mysql
     networks:
       - elastic
 

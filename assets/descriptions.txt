@@ -37,4 +37,5 @@ Section 8: Authentication Service
     - Auth Table using Sequelize (Model, Indexes, prototype)
     - Rabbitmq
     - Auth Service
-    - Controllers & routes
+    - Controllers & routes (AuthMS & GatewayMS)
+    - jest

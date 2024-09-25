@@ -19,6 +19,6 @@ export async function databaseConnection(): Promise<void> {
     log.info(`${config.MS_NAME} Mysql database connection has been established successfully.`);
   } catch (error) {
     log.error(`${config.MS_NAME} - Unable to connect to database.`);
-    log.log('error', '${config.MS_NAME} databaseConnection() method error:', error);
+    log.log('error', `${config.MS_NAME} databaseConnection() method error:`, error);
   }
 }

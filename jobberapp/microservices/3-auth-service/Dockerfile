@@ -21,6 +21,6 @@ RUN npm install -g pm2
 RUN npm ci --production
 COPY --from=builder /app/build ./build
 
-EXPOSE 4000
+EXPOSE 4002
 
 CMD [ "npm", "run", "start" ]

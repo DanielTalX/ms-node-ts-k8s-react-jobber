@@ -13,4 +13,6 @@ export enum MsQueueNames {
 
 export enum MsEmailTypes {
     verifyEmail = 'verifyEmail',
+    forgotPassword = "forgotPassword",
+    resetPasswordSuccess = "resetPasswordSuccess"
 }

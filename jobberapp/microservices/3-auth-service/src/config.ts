@@ -33,6 +33,5 @@ class Config {
 }
 
 export const config: Config = new Config();
-
-const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notificationConfig', 'debug');
+const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'AuthenticationConfig', 'debug');
 log.info(`${config.MS_NAME} config = ${JSON.stringify(config)}`);
