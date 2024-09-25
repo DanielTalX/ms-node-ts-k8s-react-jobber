@@ -1,6 +1,6 @@
 {
   "name": "@danieltalx/jobber-shared",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Helpers library for Jobber ms app",
   "main": "./build/src/index.js",
   "types": "./build/src/index.d.ts",

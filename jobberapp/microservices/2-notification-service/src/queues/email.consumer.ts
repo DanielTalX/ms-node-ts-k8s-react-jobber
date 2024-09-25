@@ -3,7 +3,7 @@ import { IEmailLocals, winstonLogger } from '@danieltalx/jobber-shared';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Logger } from 'winston';
 import { sendEmail } from './mail.transport';
-import { EmailTypes, ExchangeNames, QueueNames, RoutingKeys } from '../enums';
+import { MsEmailTypes, MsExchangeNames, MsQueueNames, MsRoutingKeys } from '../enums';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'emailConsumer', 'debug');
 
@@ -12,9 +12,9 @@ const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'emailConsumer
 
 async function consumeAuthEmailMessages(channel: Channel): Promise<void> {
   try {
-    const exchangeName = ExchangeNames.JobberEmailNotification;
-    const routingKey = RoutingKeys.AuthEmail;
-    const queueName = QueueNames.AuthEmailQueue;
+    const exchangeName = MsExchangeNames.JobberEmailNotification;
+    const routingKey = MsRoutingKeys.AuthEmail;
+    const queueName = MsQueueNames.AuthEmailQueue;
 
     await channel.assertExchange(exchangeName, 'direct');
     const jobberQueue = await channel.assertQueue(queueName, { durable: true, autoDelete: false });
@@ -41,9 +41,9 @@ async function consumeAuthEmailMessages(channel: Channel): Promise<void> {
 
 async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
   try {
-    const exchangeName = ExchangeNames.JobberOrderNotification;
-    const routingKey = RoutingKeys.OrderEmail;
-    const queueName = QueueNames.OrderEmailQueue;
+    const exchangeName = MsExchangeNames.JobberOrderNotification;
+    const routingKey = MsRoutingKeys.OrderEmail;
+    const queueName = MsQueueNames.OrderEmailQueue;
     await channel.assertExchange(exchangeName, 'direct');
     const jobberQueue = await channel.assertQueue(queueName, { durable: true, autoDelete: false });
     await channel.bindQueue(jobberQueue.queue, exchangeName, routingKey);
@@ -103,9 +103,9 @@ async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
         serviceFee,
         total
       };
-      if (template === EmailTypes.orderPlaced) {
-        await sendEmail(EmailTypes.orderPlaced, receiverEmail, locals);
-        await sendEmail(EmailTypes.orderReceipt, receiverEmail, locals);
+      if (template === MsEmailTypes.orderPlaced) {
+        await sendEmail(MsEmailTypes.orderPlaced, receiverEmail, locals);
+        await sendEmail(MsEmailTypes.orderReceipt, receiverEmail, locals);
       } else {
         await sendEmail(template, receiverEmail, locals);
       }

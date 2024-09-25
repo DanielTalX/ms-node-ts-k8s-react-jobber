@@ -46,7 +46,7 @@
     "tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
-    "@danieltalx/jobber-shared": "file:local-packs/danieltalx-jobber-shared-0.0.2.tgz",
+    "@danieltalx/jobber-shared": "file:local-packs/danieltalx-jobber-shared-0.0.3.tgz",
     "@elastic/elasticsearch": "^8.10.0",
     "@faker-js/faker": "^8.2.0",
     "amqplib": "^0.10.3",

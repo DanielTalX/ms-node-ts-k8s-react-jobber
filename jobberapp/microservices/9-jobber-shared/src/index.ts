@@ -91,4 +91,10 @@ export {
   isEmail,
   isDataURL
 } from './utils/helpers';
+export {
+  ExchangeNames,
+  RoutingKeys,
+  QueueNames,
+  EmailTypes,
+} from './enums';
 

@@ -1,19 +1,21 @@
-export enum ExchangeNames {
-    JobberEmailNotification = 'jobber-email-notification',
-    JobberOrderNotification = 'jobber-order-notification',
+import { EmailTypes, ExchangeNames, QueueNames, RoutingKeys } from "@danieltalx/jobber-shared";
+
+export enum MsExchangeNames {
+    JobberEmailNotification = ExchangeNames.JobberEmailNotification,
+    JobberOrderNotification = ExchangeNames.JobberOrderNotification,
 }
 
-export enum RoutingKeys {
-    AuthEmail = 'auth-email',
-    OrderEmail = 'order-email',
+export enum MsRoutingKeys {
+    AuthEmail = RoutingKeys.AuthEmail,
+    OrderEmail = RoutingKeys.OrderEmail,
 }
 
-export enum QueueNames {
-    AuthEmailQueue = 'auth-email-queue',
-    OrderEmailQueue = 'order-email-queue',
+export enum MsQueueNames {
+    AuthEmailQueue = QueueNames.AuthEmailQueue,
+    OrderEmailQueue = QueueNames.OrderEmailQueue,
 }
 
-export enum EmailTypes {
-    orderPlaced = 'orderPlaced',
-    orderReceipt = 'orderReceipt',
+export enum MsEmailTypes {
+    orderPlaced = EmailTypes.orderPlaced,
+    orderReceipt = EmailTypes.orderReceipt,
 }

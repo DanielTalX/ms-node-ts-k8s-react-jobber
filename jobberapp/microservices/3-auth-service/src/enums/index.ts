@@ -1,18 +1,20 @@
+import { EmailTypes, ExchangeNames, RoutingKeys } from "@danieltalx/jobber-shared";
+
 export enum MsExchangeNames {
-    JobberBuyerUpdate = 'jobber-buyer-update',
-    JobberEmailNotification = 'jobber-email-notification',
+    JobberBuyerUpdate = ExchangeNames.JobberBuyerUpdate,
+    JobberEmailNotification = ExchangeNames.JobberEmailNotification,
 }
 
 export enum MsRoutingKeys {
-    UserBuyer = 'user-buyer',
-    AuthEmail = 'auth-email',
+    UserBuyer = RoutingKeys.UserBuyer,
+    AuthEmail = RoutingKeys.AuthEmail,
 }
 
 export enum MsQueueNames {
 }
 
 export enum MsEmailTypes {
-    verifyEmail = 'verifyEmail',
-    forgotPassword = "forgotPassword",
-    resetPasswordSuccess = "resetPasswordSuccess"
+    verifyEmail = EmailTypes.verifyEmail,
+    forgotPassword = EmailTypes.forgotPassword,
+    resetPasswordSuccess = EmailTypes.resetPasswordSuccess,
 }
