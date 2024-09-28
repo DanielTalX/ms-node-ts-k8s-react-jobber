@@ -44,3 +44,4 @@ Section 9: Authentication Service ElasticSearch
         - dashboard & API
     - Controllers & routes (AuthMS & GatewayMS)
     - search & seed http test 
+Section 10: Users Microservice
