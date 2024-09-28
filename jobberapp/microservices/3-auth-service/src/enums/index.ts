@@ -18,3 +18,7 @@ export enum MsEmailTypes {
     forgotPassword = EmailTypes.forgotPassword,
     resetPasswordSuccess = EmailTypes.resetPasswordSuccess,
 }
+
+export enum MsElasticIndexes {
+    gigs = 'gigs'
+}

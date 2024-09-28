@@ -39,3 +39,7 @@ Section 8: Authentication Service
     - Auth Service
     - Controllers & routes (AuthMS & GatewayMS)
     - jest
+Section 9: Authentication Service ElasticSearch
+    - ElasticSearch and Kibana 
+        - dashboard & API
+    - Controllers & routes (AuthMS & GatewayMS)
