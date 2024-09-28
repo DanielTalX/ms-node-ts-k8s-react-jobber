@@ -43,3 +43,4 @@ Section 9: Authentication Service ElasticSearch
     - ElasticSearch and Kibana 
         - dashboard & API
     - Controllers & routes (AuthMS & GatewayMS)
+    - search & seed http test 
