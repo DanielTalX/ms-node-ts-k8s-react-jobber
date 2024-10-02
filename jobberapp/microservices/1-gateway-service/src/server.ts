@@ -15,6 +15,8 @@ import { elasticSearch } from '@gateway/elasticsearch';
 import { isAxiosError } from 'axios';
 import { appRoutes } from './routes';
 import { axiosAuthInstance } from '@gateway/services/api/auth.service';
+import { axiosBuyerInstance } from '@gateway/services/api/buyer.service';
+import { axiosSellerInstance } from '@gateway/services/api/seller.service';
 
 const DEFAULT_ERROR_CODE = 500;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'apiGatewayServer', 'debug');
@@ -59,6 +61,8 @@ export class GatewayServer {
     app.use((req: Request, _res: Response, next: NextFunction) => {
       if (req.session?.jwt) {
         axiosAuthInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
+        axiosBuyerInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
+        axiosSellerInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
       }
       next();
     });

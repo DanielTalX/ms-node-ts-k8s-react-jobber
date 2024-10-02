@@ -49,3 +49,4 @@ Section 10: Users Microservice
         - MongoDB, ElasticSearch, Rabbitmq connection
         - Models & Schemas
     - Rabbitmq producer & consumers
+    - Controllers & routes (UsersMS & GatewayMS)
