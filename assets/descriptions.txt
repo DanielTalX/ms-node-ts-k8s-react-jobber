@@ -51,3 +51,5 @@ Section 10: Users Microservice
     - Rabbitmq producer & consumers
     - Controllers & routes (UsersMS & GatewayMS)
     - seed & unit test
+Section 11: Gig Microservice
+    - Gig MS setup - MongoDB, ElasticSearch connection
