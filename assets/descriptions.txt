@@ -50,3 +50,4 @@ Section 10: Users Microservice
         - Models & Schemas
     - Rabbitmq producer & consumers
     - Controllers & routes (UsersMS & GatewayMS)
+    - seed & unit test
