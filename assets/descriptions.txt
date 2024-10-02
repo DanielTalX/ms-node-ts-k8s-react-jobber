@@ -45,3 +45,7 @@ Section 9: Authentication Service ElasticSearch
     - Controllers & routes (AuthMS & GatewayMS)
     - search & seed http test 
 Section 10: Users Microservice
+    - Users MS setup
+        - MongoDB, ElasticSearch, Rabbitmq connection
+        - Models & Schemas
+    - Rabbitmq producer & consumers
