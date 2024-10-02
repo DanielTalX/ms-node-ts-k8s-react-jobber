@@ -10,9 +10,11 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { verify } from 'jsonwebtoken';
 import compression from 'compression';
-import { checkConnection } from '@gig/elasticsearch';
+import { checkConnection, createIndex } from '@gig/elasticsearch';
 import { appRoutes } from '@gig/routes';
 import { Channel } from 'amqplib';
+import { MsElasticIndexes } from '@gig/enums';
+import { createQueueConnection } from '@gig/queues/connection';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'gigServer', 'debug');
 
@@ -60,11 +62,12 @@ function routesMiddleware(app: Application): void {
 }
 
 async function startQueues(): Promise<void> {
-  
+  gigChannel = await createQueueConnection() as Channel;
 }
 
 function startElasticSearch(): void {
   checkConnection();
+  createIndex(MsElasticIndexes.gigs)
 }
 
 function gigErrorHandler(app: Application): void {

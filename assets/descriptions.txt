@@ -52,4 +52,5 @@ Section 10: Users Microservice
     - Controllers & routes (UsersMS & GatewayMS)
     - seed & unit test
 Section 11: Gig Microservice
-    - Gig MS setup - MongoDB, ElasticSearch connection
+    - Gig MS setup - MongoDB, ElasticSearch, Rabbitmq connection
+    - Models & Schemas

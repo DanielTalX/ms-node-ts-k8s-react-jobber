@@ -1,7 +1,7 @@
 import { Client } from '@elastic/elasticsearch';
-import { ClusterHealthResponse } from '@elastic/elasticsearch/lib/api/types';
+import { ClusterHealthResponse, CountResponse, GetResponse } from '@elastic/elasticsearch/lib/api/types';
 import { config } from '@gig/config';
-import { winstonLogger } from '@danieltalx/jobber-shared';
+import { ISellerGig, winstonLogger } from '@danieltalx/jobber-shared';
 import { Logger } from 'winston';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'gigElasticSearchServer', 'debug');
@@ -54,8 +54,68 @@ async function createIndex(indexName: string): Promise<void> {
   }
 }
 
+const getDocumentCount = async (index: string): Promise<number> => {
+  try {
+    const result: CountResponse = await elasticSearchClient.count({ index });
+    return result.count;
+  } catch (error) {
+    log.log('error', `${config.MS_NAME} elasticsearch getDocumentCount() method error:`, error);
+    return 0;
+  }
+};
+
+const getIndexedData = async (index: string, itemId: string): Promise<ISellerGig> => {
+  try {
+    const result: GetResponse = await elasticSearchClient.get({ index, id: itemId });
+    return result._source as ISellerGig;
+  } catch (error) {
+    log.log('error', `${config.MS_NAME} elasticsearch getIndexedData() method error:`, error);
+    return {} as ISellerGig;
+  }
+};
+
+const addDataToIndex = async (index: string, itemId: string, gigDocument: unknown): Promise<void> => {
+  try {
+    await elasticSearchClient.index({
+      index,
+      id: itemId,
+      document: gigDocument
+    });
+  } catch (error) {
+    log.log('error', `${config.MS_NAME} elasticsearch addDataToIndex() method error:`, error);
+  }
+};
+
+const updateIndexedData = async (index: string, itemId: string, gigDocument: unknown): Promise<void> => {
+  try {
+    await elasticSearchClient.update({
+      index,
+      id: itemId,
+      doc: gigDocument
+    });
+  } catch (error) {
+    log.log('error', `${config.MS_NAME} elasticsearch updateIndexedData() method error:`, error);
+  }
+};
+
+const deleteIndexedData = async (index: string, itemId: string): Promise<void> => {
+  try {
+    await elasticSearchClient.delete({
+      index,
+      id: itemId
+    });
+  } catch (error) {
+    log.log('error', `${config.MS_NAME} elasticsearch deleteIndexedData() method error:`, error);
+  }
+};
+
 export {
   elasticSearchClient,
   checkConnection,
   createIndex,
+  getDocumentCount,
+  getIndexedData,
+  addDataToIndex,
+  updateIndexedData,
+  deleteIndexedData
 };
