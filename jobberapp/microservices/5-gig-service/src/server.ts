@@ -15,6 +15,7 @@ import { appRoutes } from '@gig/routes';
 import { Channel } from 'amqplib';
 import { MsElasticIndexes } from '@gig/enums';
 import { createQueueConnection } from '@gig/queues/connection';
+import { consumeGigDirectMessage, consumeSeedDirectMessages } from '@gig/queues/gig.consumer';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'gigServer', 'debug');
 
@@ -63,6 +64,8 @@ function routesMiddleware(app: Application): void {
 
 async function startQueues(): Promise<void> {
   gigChannel = await createQueueConnection() as Channel;
+  await consumeGigDirectMessage(gigChannel);
+  await consumeSeedDirectMessages(gigChannel);
 }
 
 function startElasticSearch(): void {

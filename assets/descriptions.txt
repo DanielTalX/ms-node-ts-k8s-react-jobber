@@ -54,3 +54,5 @@ Section 10: Users Microservice
 Section 11: Gig Microservice
     - Gig MS setup - MongoDB, ElasticSearch, Rabbitmq connection
     - Models & Schemas
+    - Rabbitmq producer & consumers
+    - gig and search services
