@@ -11,8 +11,8 @@ const sellerRoutes = (): Router => {
   router.get('/username/:username', username);
   router.get('/random/:size', random);
   router.post('/create', createSeller);
-  router.put('/:sellerId', updateSeller);
   router.put('/seed/:count', seed);
+  router.put('/:sellerId', updateSeller);
 
   return router;
 };

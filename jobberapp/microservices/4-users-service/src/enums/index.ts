@@ -1,27 +1,27 @@
-import { ExchangeNames, RoutingKeys } from "@danieltalx/jobber-shared";
+import { ExchangeNames, QueueNames, RoutingKeys } from "@danieltalx/jobber-shared";
 
 export enum MsExchangeNames {
     JobberBuyerUpdate = ExchangeNames.JobberBuyerUpdate,
-    JobberSellerUpdate = 'jobber-seller-update',
-    JobberReview = 'jobber-review',
-    JobberUpdateGig = 'jobber-update-gig',
-    JobberGig = 'jobber-gig',
-    JobberSeedGig = 'jobber-seed-gig',
+    JobberSellerUpdate = ExchangeNames.JobberSellerUpdate,
+    JobberReview = ExchangeNames.JobberReview,
+    JobberUpdateGig = ExchangeNames.JobberUpdateGig,
+    JobberGig = ExchangeNames.JobberGig,
+    JobberSeedGig = ExchangeNames.JobberSeedGig,
 }
 
 export enum MsRoutingKeys {
     UserBuyer = RoutingKeys.UserBuyer,
-    UserSeller = 'user-seller',
-    UpdateGig = 'update-gig',
-    GetSellers = 'get-sellers',
-    ReceiveSellers = 'receive-sellers',
+    UserSeller = RoutingKeys.UserSeller,
+    UpdateGig = RoutingKeys.UpdateGig,
+    GetSellers = RoutingKeys.GetSellers,
+    ReceiveSellers = RoutingKeys.ReceiveSellers,
 }
 
 export enum MsQueueNames {
-    UserBuyerQueue = 'user-buyer-queue',
-    UserSellerQueue = 'user-seller-queue',
-    SellerReviewQueue = 'seller-review-queue',
-    UserGigQueue = 'user-gig-queue',
+    UserBuyerQueue = QueueNames.UserBuyerQueue,
+    UserSellerQueue = QueueNames.UserSellerQueue,
+    SellerReviewQueue = QueueNames.SellerReviewQueue,
+    UserGigQueue = QueueNames.UserGigQueue,
 }
 
 export enum MsSchemaNames {

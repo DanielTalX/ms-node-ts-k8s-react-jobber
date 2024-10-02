@@ -17,8 +17,8 @@ class SellerRoutes {
     this.router.get('/seller/username/:username', authMiddleware.checkAuthentication, Get.prototype.username);
     this.router.get('/seller/random/:size', authMiddleware.checkAuthentication, Get.prototype.random);
     this.router.post('/seller/create', authMiddleware.checkAuthentication, Create.prototype.seller);
-    this.router.put('/seller/:sellerId', authMiddleware.checkAuthentication, Update.prototype.seller);
     this.router.put('/seller/seed/:count', authMiddleware.checkAuthentication, SellerSeed.prototype.seller);
+    this.router.put('/seller/:sellerId', authMiddleware.checkAuthentication, Update.prototype.seller);
 
     return this.router;
   }
