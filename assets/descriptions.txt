@@ -56,4 +56,5 @@ Section 11: Gig Microservice
     - Models & Schemas
     - Rabbitmq producer & consumers
     - gig and search services
-    - Controllers & routes (GigMS)
+    - Controllers & routes (GigMS & GatewayMS)
+    - Redis & Socket.io
