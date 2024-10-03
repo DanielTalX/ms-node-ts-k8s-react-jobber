@@ -1,0 +1,92 @@
+http://localhost:5601/app/home#/
+http://localhost:5601/app/dev_tools#/console
+
+https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/getting-started-js.html
+https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html
+
+
+https://www.npmjs.com/package/elasticdump
+elasticdump --input=./gigs.json --output=http://elastic:admin1234@localhost:9200/gigs --type=data
+
+SECTION 9
+~~~~~~~~~~
+# find all gigs
+GET gigs/_search
+
+# create  a gig
+POST gigs/_create/3
+{
+    "name": "Dani",
+    "message": "First Dani message"
+}
+
+###
+GET gigs/_search
+{
+  "from": 5,
+  "size": 20,
+  "query": {
+    "match": {
+      "_source.username":"Tormentedper"
+    }
+  }
+}
+
+###
+GET gigs/_search
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    query_string: {
+                        fields: ['username', 'title', 'description', 'basicDescription', 'basicTitle', 'categories', 'subCategories', 'tags'],
+                        query: `*${Audioresume}*`
+                    }
+                }
+            ]
+        }
+    }
+}
+
+SECTION 11
+~~~~~~~~~~
+### update a gig
+POST gigs/_update/id
+{
+    "doc": {
+        "ratingsCount": 3,
+        "ratingSum": 15
+    }
+}
+
+### find a gig by id
+GET gigs/_doc/id
+
+### find all docs from category with threshold rating
+GET gigs/_search
+{
+    "query": {
+      "bool": {
+        "filter": {
+          "script": {
+            "script": {
+              "source": "doc['ratingSum'].value != 0 && (doc['ratingSum'].value / doc['ratingsCount'].value == params['threshold'])",
+              "lang": "painless",
+              "params": {
+                "threshold": 5
+              }
+            }
+          }
+        },
+        "must": [
+          {
+            "query_string": {
+              "fields": ["categories"],
+              "query": "*Data*"
+            }
+          }
+        ]
+      }
+    }
+}

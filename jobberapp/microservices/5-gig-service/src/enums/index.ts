@@ -4,12 +4,14 @@ export enum MsExchangeNames {
     JobberSellerUpdate = ExchangeNames.JobberSellerUpdate,
     JobberUpdateGig = ExchangeNames.JobberUpdateGig,
     JobberSeedGig = ExchangeNames.JobberSeedGig,
+    JobberGig = ExchangeNames.JobberGig,
 }
 
 export enum MsRoutingKeys {
     UserSeller = RoutingKeys.UserSeller,
     UpdateGig = RoutingKeys.UpdateGig,
     ReceiveSellers = RoutingKeys.ReceiveSellers,
+    GetSellers = RoutingKeys.GetSellers,
     
 }
 
