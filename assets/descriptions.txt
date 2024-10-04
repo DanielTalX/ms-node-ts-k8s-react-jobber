@@ -58,3 +58,5 @@ Section 11: Gig Microservice
     - gig and search services
     - Controllers & routes (GigMS & GatewayMS)
     - Redis & Socket.io
+Section 12: Chat Microservice
+    - Chat MS setup - MongoDB, ElasticSearch
