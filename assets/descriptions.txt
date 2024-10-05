@@ -63,3 +63,4 @@ Section 12: Chat Microservice
     - Socket.io connection (ChatMS & GatewayMS)
     - Models & Schemas
     - message service
+    - Controllers & routes (ChatMS & GatewayMS)
