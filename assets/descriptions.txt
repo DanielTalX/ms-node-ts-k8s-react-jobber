@@ -60,3 +60,6 @@ Section 11: Gig Microservice
     - Redis & Socket.io
 Section 12: Chat Microservice
     - Chat MS setup - MongoDB, ElasticSearch
+    - Socket.io connection (ChatMS & GatewayMS)
+    - Models & Schemas
+    - message service

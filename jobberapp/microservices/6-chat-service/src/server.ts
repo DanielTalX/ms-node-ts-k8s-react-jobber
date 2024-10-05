@@ -13,12 +13,15 @@ import compression from 'compression';
 import { checkConnection } from '@chat/elasticsearch';
 import { appRoutes } from '@chat/routes';
 import { Channel } from 'amqplib';
+import { Server } from 'socket.io';
+import { createQueueConnection } from '@chat/queues/connection';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'chatServer', 'debug');
 
-export let chatChannel: Channel;
+let chatChannel: Channel;
+let socketIOChatObject: Server;
 
-export function start(app: Application): void {
+function start(app: Application): void {
   securityMiddleware(app);
   standardMiddleware(app);
   routesMiddleware(app);
@@ -59,7 +62,9 @@ function routesMiddleware(app: Application): void {
   appRoutes(app);
 }
 
-async function startQueues(): Promise<void> {}
+async function startQueues(): Promise<void> {
+  chatChannel = await createQueueConnection() as Channel;
+}
 
 function startElasticSearch(): void {
   checkConnection();
@@ -75,14 +80,36 @@ function chatErrorHandler(app: Application): void {
   });
 }
 
-function startServer(app: Application): void {
+const startServer = async (app: Application): Promise<void> => {
   try {
     const httpServer: http.Server = new http.Server(app);
+    const socketIO: Server = await createSocketIO(httpServer);
+    startHttpServer(httpServer);
+    socketIOChatObject = socketIO;
+  } catch (error) {
+    log.log('error', `${config.MS_NAME} startServer() method error:`, error);
+  }
+};
+
+const createSocketIO = async (httpServer: http.Server): Promise<Server> => {
+  const io: Server = new Server(httpServer, {
+    cors: {
+      origin: config.API_GATEWAY_URL, //'*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+    }
+  });
+  return io;
+};
+
+const startHttpServer = (httpServer: http.Server): void => {
+  try {
     log.info(`${config.MS_NAME} has started with process id ${process.pid}`);
     httpServer.listen(config.SERVER_PORT, () => {
       log.info(`${config.MS_NAME} running on port ${config.SERVER_PORT}`);
     });
   } catch (error) {
-    log.log('error', `${config.MS_NAME} startServer() method error:`, error);
+    log.log('error', `${config.MS_NAME} startHttpServer() method error:`, error);
   }
-}
+};
+
+export { start, chatChannel, socketIOChatObject };
