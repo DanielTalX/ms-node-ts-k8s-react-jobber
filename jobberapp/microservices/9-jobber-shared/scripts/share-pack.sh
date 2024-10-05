@@ -10,6 +10,7 @@ ms_names=(
     '4-users-service'
     '5-gig-service'
     '6-chat-service'
+    '7-order-service'
 )
 lib_name='9-jobber-shared'
 lib_pack_name=danieltalx-jobber-shared

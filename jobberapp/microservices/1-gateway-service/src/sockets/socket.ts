@@ -7,6 +7,7 @@ import { config } from '@gateway/config';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'gatewaySocket', 'debug');
 let chatSocketClient: SocketClient;
+let orderSocketClient: SocketClient;
 
 // https://www.npmjs.com/package/socket.io
 // https://www.npmjs.com/package/socket.io-client
@@ -19,10 +20,12 @@ export class SocketIOAppHandler {
     this.io = io;
     this.gatewayCache = new GatewayCache();
     // this.chatSocketServiceIOConnections();
+    // this.orderSocketServiceIOConnections();
   }
 
   public listen(): void {
     this.chatSocketServiceIOConnections();
+    this.orderSocketServiceIOConnections();
 
     this.io.on('connection', async (socket: Socket) => {
       socket.on('getLoggedInUsers', async () => {
@@ -74,6 +77,29 @@ export class SocketIOAppHandler {
     chatSocketClient.on('message updated', (data: IMessageDocument) => {
       this.io.emit('message updated', data);
     });
+  }
+
+  private orderSocketServiceIOConnections(): void {
+    orderSocketClient = io(`${config.MESSAGE_BASE_URL}`, {
+      transports: ['websocket', 'polling'],
+      secure: true
+    });
+
+    orderSocketClient.on('connect', () => {
+      log.info(`${config.MS_NAME} OrderService socket connected`);
+    });
+
+    orderSocketClient.on('disconnect', (reason: SocketClient.DisconnectReason) => {
+      log.log('error', `${config.MS_NAME} OrderSocket disconnect reason:`, reason);
+      orderSocketClient.connect();
+    });
+
+    orderSocketClient.on('connect_error', (error: Error) => {
+      log.log('error', `${config.MS_NAME} OrderService socket connection error:`, error);
+      orderSocketClient.connect();
+    });
+
+    // custom events
   }
 
 };
