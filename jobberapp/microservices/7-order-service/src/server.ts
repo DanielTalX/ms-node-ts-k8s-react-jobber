@@ -1,20 +1,20 @@
 import http from 'http';
-
 import 'express-async-errors';
-import { CustomError, IAuthPayload, IErrorResponse, winstonLogger } from '@danieltalx/jobber-shared';
 import { Logger } from 'winston';
-import { config } from '@order/config';
 import { Application, Request, Response, NextFunction, json, urlencoded } from 'express';
 import hpp from 'hpp';
 import helmet from 'helmet';
 import cors from 'cors';
 import { verify } from 'jsonwebtoken';
 import compression from 'compression';
-import { checkConnection } from '@order/elasticsearch';
-import { appRoutes } from '@order/routes';
 import { Channel } from 'amqplib';
 import { Server } from 'socket.io';
+import { CustomError, IAuthPayload, IErrorResponse, winstonLogger } from '@danieltalx/jobber-shared';
+import { config } from '@order/config';
+import { appRoutes } from '@order/routes';
+import { checkConnection } from '@order/elasticsearch';
 import { createQueueConnection } from '@order/queues/connection';
+import { consumerReviewFanoutMessages } from '@order/queues/order.consumer';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'orderServer', 'debug');
 
@@ -64,6 +64,7 @@ function routesMiddleware(app: Application): void {
 
 async function startQueues(): Promise<void> {
   orderChannel = await createQueueConnection() as Channel;
+  await consumerReviewFanoutMessages(orderChannel);
 }
 
 function startElasticSearch(): void {

@@ -66,3 +66,6 @@ Section 12: Chat Microservice
     - Controllers & routes (ChatMS & GatewayMS)
 Section 13: Order Microservice
     - Order MS setup - MongoDB, ElasticSearch, Socket.io
+    - Socket.io connection (OrderMS & GatewayMS)
+    - Models & Schemas
+    - order & notification service
