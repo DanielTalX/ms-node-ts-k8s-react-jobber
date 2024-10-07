@@ -316,6 +316,41 @@ services:
       - mongodb
     networks:
       - elastic
+  
+  order:
+    container_name: order_container
+    build:
+      context: ../microservices/6-order-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4006:4006
+    env_file: ../microservices/6-order-service/.env
+    environment:
+      - MS_NAME=OrderMS
+      - SERVER_PORT=4006
+      - NODE_ENV=development
+      - ENABLE_APM=0
+      - GATEWAY_JWT_TOKEN=ab7637698c4c8eb4ca24a82c69eb97f396
+      - JWT_TOKEN=ac476502cec37af7510e1135a6d5135158
+      - CLOUD_NAME=
+      - CLOUD_API_KEY=
+      - CLOUD_API_SECRET=
+      - USE_CLOUDINARY=false
+      - STRIPE_API_KEY=sk_test_51OAXs6DTglvMeJPrlX1Lp9Mw7aXwlBbFJOLQdlkFv5mRKPkQdFrxvYN68xZ54wBr6VbP44khSM5UpPtfaixlMgcw00CIZEpmn5
+      - CLIENT_URL=http://localhost:3000
+      - API_GATEWAY_URL=http://gateway_container:4000
+      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
+      - MONGO_DATABASE_URL=mongodb://mongodb_container:27017/jobber-order
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
+      - ELASTIC_APM_SERVER_URL=http://localhost:8200
+      - ELASTIC_APM_SECRET_TOKEN=
+
+    depends_on:
+      - elasticsearch
+      - mongodb
+    networks:
+      - elastic
 
 networks:
   elastic:

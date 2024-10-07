@@ -23,6 +23,7 @@ import { axiosBuyerInstance } from '@gateway/services/api/buyer.service';
 import { axiosSellerInstance } from '@gateway/services/api/seller.service';
 import { axiosGigInstance } from '@gateway/services/api/gig.service';
 import { axiosMessageInstance } from '@gateway/services/api/message.service';
+import { axiosOrderInstance } from '@gateway/services/api/order.service';
 
 const DEFAULT_ERROR_CODE = 500;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'apiGatewayServer', 'debug');
@@ -72,6 +73,8 @@ export class GatewayServer {
         axiosSellerInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
         axiosGigInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
         axiosMessageInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
+        axiosOrderInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
+
       }
       next();
     });

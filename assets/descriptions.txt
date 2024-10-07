@@ -69,3 +69,5 @@ Section 13: Order Microservice
     - Socket.io connection (OrderMS & GatewayMS)
     - Models & Schemas
     - order & notification service
+    - stripe
+    - Controllers & routes (OrderMS & GatewayMS)
