@@ -71,3 +71,5 @@ Section 13: Order Microservice
     - order & notification service
     - stripe
     - Controllers & routes (OrderMS & GatewayMS)
+Section 14: Review Microservice
+    - Review MS setup - PostgresDB, ElasticSearch, Rabbitmq connection
