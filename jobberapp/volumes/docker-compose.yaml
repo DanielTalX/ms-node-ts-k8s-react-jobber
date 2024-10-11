@@ -56,6 +56,8 @@ services:
       - '5432:5432'
     volumes:
       - ./docker-volumes/postgres:/var/lib/postgresql
+    networks:
+      - elastic
   
   rabbitmq:
     # https://hub.docker.com/_/rabbitmq
@@ -349,6 +351,38 @@ services:
     depends_on:
       - elasticsearch
       - mongodb
+    networks:
+      - elastic
+
+  review:
+    container_name: review_container
+    build:
+      context: ../microservices/8-review-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4007:4007
+    env_file: ../microservices/8-review-service/.env
+    environment:
+      - MS_NAME=ReviewMS
+      - SERVER_PORT=4007
+      - NODE_ENV=development
+      - ENABLE_APM=0
+      - GATEWAY_JWT_TOKEN=ab7637698c4c8eb4ca24a82c69eb97f396
+      - JWT_TOKEN=ac476502cec37af7510e1135a6d5135158
+      - API_GATEWAY_URL=http://gateway_container:4000
+      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
+      - ELASTIC_APM_SERVER_URL=http://localhost:8200
+      - ELASTIC_APM_SECRET_TOKEN=
+      - PG_DATABASE_HOST=localhost
+      - PG_DATABASE_USER=jobber
+      - PG_DATABASE_PASSWORD=api
+      - PG_DATABASE_NAME=jobber_reviews
+      - CLUSTER_TYPE=local
+    depends_on:
+      - elasticsearch
+      - postgres
     networks:
       - elastic
 
