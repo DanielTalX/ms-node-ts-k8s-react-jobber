@@ -26,4 +26,26 @@ Or via:
   * If the service account token was generated, it will be displayed.
   * Once generated, copy and add it to the kibana environment variable `ELASTICSEARCH_SERVICEACCOUNT_TOKEN` inside your docker compose file
 * `docker compose up -d kibana`
+* after 2 min open: http://localhost:5601/app/home#/
+
+## Heartbeat file
+* inside the `heartbeat.yml`:
+  * if you run microservices with docker Replace `<your-ip-address_or_container_name>` with ms_conteriner_name.
+  * else if you run microservices with node run dev Replace `<your-ip-address_or_container_name>` with your own ip address.
+
+## Run docker compose to the others cors services
+* `docker compose up -d metricbeat`
+  * http://localhost:5601/app/observability/overview?rangeFrom=now-15m&rangeTo=now
+  * Hosts section click Show invetory
+* `docker compose up -d heartbeat`
+  * http://localhost:5601/app/observability/overview?rangeFrom=now-15m&rangeTo=now
+  * Monitors section click Show monitors
+* `docker compose up -d apmServer`
+  * http://localhost:5601/app/observability/overview?rangeFrom=now-15m&rangeTo=now
+  * Services section click Show service invetory
+
+## Running microservices
+* You can run the microservices using either docker compose or by opening a terminal for wach service and execute `npm run dev`.
+* Personally, I prefer to run the microservices individually in the terminal because it allows me to easily monitor errors displayed.
+* Whichever approach you intend to use to start the microservices, make sure the `gateway service` is always the last service you start. All other services should be running before starting the `gateway service`.
 

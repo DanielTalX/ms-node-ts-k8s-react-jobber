@@ -75,3 +75,10 @@ Section 14: Review Microservice
     - Review MS setup - PostgresDB, ElasticSearch, Rabbitmq connection
     - review service
     - Controllers & routes (ReviewMS & GatewayMS)
+Section 15: Local ElasticSearch Monitoring
+    - Metric beats docker service
+    - Heartbeat docker service
+    - Update elasticsearch and kibana in docker compose file
+    - Create kibana service token
+    - APM server setup & APM nodejs client setup
+    - see Volumes.Readme file for more info

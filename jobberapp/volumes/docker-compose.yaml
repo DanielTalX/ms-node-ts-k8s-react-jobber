@@ -110,17 +110,79 @@ services:
       - ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
       - ELASTICSEARCH_USERNAME=kibana_system ### elastic => kibana_system
       - ELASTICSEARCH_PASSWORD=kibana ### admin1234 => kibana
-      - ELASTICSEARCH_SERVICEACCOUNT_TOKEN=AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6N1dkRXZKR01TOHFVVWJ4amhQdFFWUQ
+      - ELASTICSEARCH_SERVICEACCOUNT_TOKEN=AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6ZkU5cV9RTUxTaHkxNjZGcXRpNndsdw
       - XPACK_FLEET_AGENTS_ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"] ###
     ports:
       - 5601:5601
-    networks:
-      - elastic
     volumes:
       - ./kibana.yml/:/usr/share/kibana/config/kibana.yml:ro
     depends_on: 
       - elasticsearch
+    networks:
+      - elastic
+
+  # https://www.elastic.co/guide/en/observability/current/apm.html
+  # https://www.elastic.co/guide/en/observability/current/apm-running-on-docker.html
+  # https://www.elastic.co/guide/en/apm/agent/nodejs/current/intro.html
+  apmServer:
+    image: docker.elastic.co/apm/apm-server:8.12.2
+    container_name: apm_server_container
+    ports:
+      - 8200:8200
+    volumes:
+      - ./apm-server.yml:/usr/share/apm-server/apm-server.yml:ro
+    networks:
+      - elastic
+    command: >
+      apm-server -e
+        -E apm-server.rum.enabled=true
+        -E setup.kibana.host=kibana_container:5601
+        -E setup.template.settings.index.number_of_replicas=0
+        -E apm-server.kibana.enabled=true
+        -E apm-server.kibana.host=kibana_container:5601
+        -E apm-server.kibana.protocol=http
+        -E strict.perms=false
+        -E apm-server.auth.anonymous.enabled=true
   
+  # https://www.elastic.co/guide/en/beats/metricbeat/8.12/metricbeat-overview.html
+  metricbeat:
+    # https://www.elastic.co/guide/en/beats/metricbeat/current/running-on-docker.html
+    container_name: metricbeat_container
+    image: docker.elastic.co/beats/metricbeat:8.12.2
+    restart: always
+    user: root
+    ports:
+      - 5066:5066
+    volumes:
+      - ./metricbeat.yml/:/usr/share/metricbeat/metricbeat.yml:ro
+      # docker module
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # system module
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+    depends_on: 
+      - elasticsearch
+    networks:
+      - elastic
+
+  # https://www.elastic.co/guide/en/beats/heartbeat/current/running-on-docker.html
+  heartbeat:
+    container_name: heartbeat_container
+    image: docker.elastic.co/beats/heartbeat:8.12.2
+    user: root
+    hostname: heartbeat
+    cap_add:
+      - NET_RAW
+    command: ["--strict.perms=false"]
+    volumes:
+      - ./heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
+    depends_on: 
+      - elasticsearch
+    networks:
+      - elastic
+
   notifications:
     container_name: notification_container
     build:
@@ -322,12 +384,12 @@ services:
   order:
     container_name: order_container
     build:
-      context: ../microservices/6-order-service
+      context: ../microservices/7-order-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4006:4006
-    env_file: ../microservices/6-order-service/.env
+    env_file: ../microservices/7-order-service/.env
     environment:
       - MS_NAME=OrderMS
       - SERVER_PORT=4006
