@@ -1,0 +1,14 @@
+- create production namespace if it does not exist
+kubectl create namespace production
+
+- add all at the same time:
+kubectl apply -f .
+
+- add them individually
+kubectl apply -f storageClass.yaml
+kubectl apply -f pv.yaml
+kubectl apply -f service.yaml
+kubectl apply -f statefulSet.yaml
+
+- display logs of a pod
+kubectl logs jobber-redis-0 -n production

@@ -1,0 +1,23 @@
+- create production namespace if it does not exist
+kubectl create namespace production
+
+- add all at the same time:
+kubectl apply -f .
+
+- add them individually
+kubectl apply -f storageClass.yaml
+kubectl apply -f pv.yaml
+kubectl apply -f service.yaml
+kubectl apply -f deployment.yaml
+
+- display logs of a pod
+kubectl logs jobber-redis-0 -n production
+
+
+- Access postgres from your local terminal
+    - You can check if your postgres database was created by running psql command.
+    - First, install psql on your machine
+    - Then execute the command
+        kubectl exec -it <your-postgres-podname> -n <your-namespace> -- psql -h localhost -U <postgres-username> --password -p 5432 <postgres-database>
+    - Your password will be requested
+    - If the database was created, then you see be taken into the db otherwise errors will be displayed.
