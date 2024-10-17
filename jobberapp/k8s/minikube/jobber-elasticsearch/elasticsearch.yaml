@@ -59,7 +59,10 @@ spec:
             - name: xpack.security.authc.token.enabled
               value: 'true'
             - name: ELASTIC_PASSWORD
-              value: 'admin1234'
+              valueFrom:
+                secretKeyRef:
+                  name: jobber-backend-secret
+                  key: jobber-elasticsearch-password
           ports:
           - name: jobber-elastic
             containerPort: 9200

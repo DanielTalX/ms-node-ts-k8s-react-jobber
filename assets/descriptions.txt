@@ -86,3 +86,4 @@ Section 16: Kubernetes Deployment on Minikube
     - Kubernetes Fundamentals - k8s Components, k8s Objects
     - Minikube & Lens Installation
     - Redis, Rabbitmq, MySql, Postgres, MongoDB, ElasticSearch, Kibana Kubernetes Objects
+    - Using secrets 

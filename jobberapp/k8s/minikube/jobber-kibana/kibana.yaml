@@ -33,4 +33,8 @@ spec:
             - name: ELASTICSEARCH_USERNAME
               value: kibana_system
             - name: ELASTICSEARCH_PASSWORD
-              value: 'admin1234'
+              # value: 'admin1234'
+              valueFrom:
+                secretKeyRef:
+                  name: jobber-backend-secret
+                  key: jobber-elasticsearch-password
