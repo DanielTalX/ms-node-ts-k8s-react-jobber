@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobber-review
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jobber-review
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: jobber-review
+    spec:
+      containers:
+      - name: jobber-review
+        image: mydockerid/8-review-service
+        imagePullPolicy: IfNotPresent # Always
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: 128Mi
+            cpu: 100m
+        ports:
+        - name: review
+          containerPort: 4007
+        env:
+          - name: MS_NAME
+            value: 'ReviewMS'
+          - name: SERVER_PORT
+            value: '4007'
+          - name: NODE_ENV
+            value: 'production'
+          - name: ENABLE_APM
+            value: '1'
+          - name: GATEWAY_JWT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: gateway-jwt-token
+          - name: JWT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: jwt-token
+          - name: API_GATEWAY_URL
+            value: 'http://jobber-gateway.production.svc.cluster.local:4000'
+          - name: RABBITMQ_ENDPOINT
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: jobber-rabbitmq-endpoint
+          - name: ELASTIC_SEARCH_URL
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: jobber-elasticsearch-url
+          - name: ELASTIC_APM_SERVER_URL
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key:  jobber-elastic-apm-server-url
+          - name: ELASTIC_APM_SECRET_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: jobber-elastic-apm-secret-token
+          - name: PG_DATABASE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: jobber-postgres-host
+          - name: PG_DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: jobber-postgres-user
+          - name: PG_DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: jobber-postgres-password
+          - name: PG_DATABASE_NAME
+            value: 'jobber_reviews'
+          - name: CLUSTER_TYPE
+            value: 'minikube'

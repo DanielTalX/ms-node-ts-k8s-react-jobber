@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobber-notification
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jobber-notification
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25% 
+      maxSurge: 25%
+  template:
+    metadata:
+      labels:
+        app: jobber-notification
+    spec:
+      containers:
+      - name: jobber-notification
+        image: mydockerid/2-notification-service
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: '500m'
+          requests:
+            memory: 128Mi
+            cpu: 100m
+        ports:
+        - name: notification
+          containerPort: 4001
+        env:
+          - name: MS_NAME
+            value: 'NotificationMS'
+          - name: SERVER_PORT
+            value: '4001'
+          - name: NODE_ENV
+            value: 'production'
+          - name: ENABLE_APM
+            value: '1'
+          - name: CLIENT_URL
+            value: 'http://localhost:3000'
+          - name: RABBITMQ_ENDPOINT
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: jobber-rabbitmq-endpoint
+          - name: ELASTIC_SEARCH_URL
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: jobber-elasticsearch-url
+          - name: ELASTIC_APM_SERVER_URL
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key:  jobber-elastic-apm-server-url
+          - name: ELASTIC_APM_SECRET_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: jobber-elastic-apm-secret-token
+          - name: SENDER_EMAIL
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: sender-email
+          - name: SENDER_EMAIL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: jobber-backend-secret
+                key: sender-email-password
+          - name: SMTP_HOST
+            value: 'smtp.ethereal.email'
+          - name: SMTP_PORT
+            value: '587'

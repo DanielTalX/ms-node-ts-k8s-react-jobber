@@ -13,7 +13,7 @@ kubectl apply -f elasticsearch.yaml
 - display logs of a pod
 kubectl logs jobber-redis-0 -n production
 
-- verify elastic alive by running the following in different pod shell:
-curl -X GET elastic:admin1234 "http://<ClusterIP>:9200/_cluster/health?pretty=true"
-curl -X GET elastic:admin1234 "http://10.100.217.227:9200/_cluster/health?pretty=true"
-==> but this verification didnt work
+- verify elastic alive by running the following in pod shell (MySql or elasticsearch):
+curl -X GET -u elastic:admin1234 "http://<ClusterIP>:9200/_cluster/health?pretty=true"
+curl -X GET -u elastic:admin1234 "http://10.100.217.227:9200/_cluster/health?pretty=true"
+curl -X GET -u elastic:admin1234 "http://localhost:9200/_cluster/health?pretty=true"

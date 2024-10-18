@@ -1,0 +1,14 @@
+docker login
+
+## Build docker image
+docker build -t my_dockerhub_id/image_name .
+
+## Tag docker image
+docker tag my_dockerhub_id/image_name my_dockerhub_id/image_name:new_tag
+
+## Push to docker hub
+docker push my_dockerhub_id/image_name:new_tag
+
+- verify pod of ms is alive by running the following in pod shell:
+curl -I http://<ClusterIP>:<port>/<ms-health>
+curl -I http://<ClusterIP>:4005/chat-health

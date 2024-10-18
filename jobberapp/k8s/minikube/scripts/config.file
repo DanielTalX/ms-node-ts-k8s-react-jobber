@@ -1,0 +1,6 @@
+ALL_IMAGES=('8-review-service' '7-order-service' '6-chat-service' '5-gig-service' '4-users-service' '3-auth-service' '2-notification-service' '1-gateway-service')
+IMAGES=('8-review-service' '7-order-service' '6-chat-service' '5-gig-service' '4-users-service' '3-auth-service' '2-notification-service' '1-gateway-service')
+PROJECT_NAME=blogapp
+PROJECT_DIR=project_dir=$(pwd | grep -o ".*$PROJECT_NAME")
+DOCKER_ID=mydockerid
+SLEEP=10

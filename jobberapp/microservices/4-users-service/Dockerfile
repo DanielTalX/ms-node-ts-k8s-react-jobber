@@ -16,6 +16,7 @@ RUN apk add --no-cache curl
 COPY package*.json ./
 COPY tsconfig.json ./
 COPY .npmrc ./
+COPY local-packs ./local-packs
 # RUN npm install -g pm2 npm@latest
 RUN npm install -g pm2
 RUN npm ci --production
