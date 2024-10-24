@@ -1,5 +1,12 @@
-@baseUrl = http://localhost:4000
+#@baseUrl = http://localhost:4000
+@baseUrl = https://jobberapp.local
 @urlPath = api/gateway/v1/auth
+
+###
+GET {{baseUrl}}/gateway-health
+Content-Type: application/json
+Accept: application/json 
+withCredentials: true
 
 ###
 POST {{baseUrl}}/{{urlPath}}/signup
@@ -21,7 +28,7 @@ Accept: application/json
 withCredentials: true
 {
     "username": "sunny",
-    "password": "qwerty",
+    "password": "qwerty"
 }
 
 ###

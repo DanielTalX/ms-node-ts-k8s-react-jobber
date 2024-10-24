@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: jobber-mysql
-        image: mysql:8.0.35
+        image: mysql:8.0.35 # mysql:latest # mysql:8.0.35
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: api
@@ -28,7 +28,7 @@ spec:
           value: 'jobber'
         resources:
           limits:
-            memory: "512Mi"
+            memory: "1Gi"
             cpu: "500m"
           requests:
             memory: 128Mi
@@ -42,23 +42,24 @@ spec:
           subPath: mysql
         readinessProbe:
           exec:
-            # command: ["mysql", "-h", "127.0.0.1", "-e", "SELECT 1"]
+            # mysql -h127.0.0.1 -u $MYSQL_USER -p $MYSQL_PASSWORD -e 'SELECT 1'
             command:
               - bash
               - "-c"
               - |
-                mysql -h127.0.0.1 -u$MYSQL_USER -p$MYSQL_PASSWORD -e'SELECT 1'
-          initialDelaySeconds: 120
+                mysql -e 'SELECT 1'
+          initialDelaySeconds: 60
           periodSeconds: 300
           timeoutSeconds: 60
         livenessProbe:
           exec:
+            # mysqladmin -u $MYSQL_USER -p $MYSQL_PASSWORD ping
             command:
               - bash
               - "-c"
               - |
-                mysqladmin -u$MYSQL_USER -p$MYSQL_PASSWORD ping
-          initialDelaySeconds: 120
+                mysqladmin ping
+          initialDelaySeconds: 60
           periodSeconds: 300
           timeoutSeconds: 60
       volumes:

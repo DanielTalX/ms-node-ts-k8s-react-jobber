@@ -10,3 +10,7 @@ dist
 build
 packs
 local-packs
+
+*.key
+*.crt
+*.pem

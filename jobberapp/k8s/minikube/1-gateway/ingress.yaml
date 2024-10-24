@@ -4,8 +4,8 @@ metadata:
   name: jobber-gateway-ingress
   namespace: production
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    # kubernetes.k8s.io/ingress.class: nginx
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.k8s.io/ingress.class: nginx
 spec:
   ingressClassName: nginx
   defaultBackend:
@@ -13,12 +13,12 @@ spec:
       name: jobber-gateway
       port: 
         number: 4000
-  # tls:
-    # - hosts:
-      # - jobbberapp.local
-      # secretName: gateway-ingress-tls
+  tls:
+    - hosts:
+      - jobberapp.local
+      secretName: gateway-ingress-tls
   rules:
-  - host: jobbberapp.local
+  - host: jobberapp.local
     http:
       paths:
       - path: /api/gateway/v1
