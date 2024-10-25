@@ -90,3 +90,4 @@ Section 16: Kubernetes Deployment on Minikube
     - MS (Review, Order, Chat, Gig, Users, Auth, Notification, Gateway) Kubernetes Objects
     - Add/Apply global ingress-nginx-conntroller + API gateway ingress
     - Generate self-signed certificates + Create gateway tls secret
+    - Kibana ingress, kibana configmap, change kibana user & passwrod

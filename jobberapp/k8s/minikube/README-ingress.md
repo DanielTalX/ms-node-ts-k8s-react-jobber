@@ -51,3 +51,24 @@
   - [k8s/ingress-svc.yml] - add under spec section: ingressClassName and tls sections.
   - kubectl apply -f ingress.yaml
   - https://jobberapp.local/gateway-health
+
+
+### Add Kibana Ingress
+  - add the file [k8s/minikube/jobber-kibana/ingress.yaml]
+  - add to hosts file:
+    - if using k8s descktop - 127.0.0.1 kibana.jobberapp.local
+    - if using minikube <minikube ip> kibana.jobberapp.local + minikube tunnel
+  -  [k8s/minikube/jobber-kibana] kubectl apply -f ingress.yaml
+  - http://kibana.jobberapp.local
+
+## Change Elasticsearch kibana user password
+* [jobber-elastic-pod] `curl -s -X POST -u elastic:admin1234 -H "Content-Type: application/json" http://localhost:9200/_security/user/kibana_system/_password -d "{\"password\":\"kibana\"}"`
+
+## Create kibana service token
+* [jobber-elastic-pod] `bin/elasticsearch-service-tokens create elastic/kibana jobber-kibana`
+  ==> SERVICE_TOKEN elastic/kibana/jobber-kibana = <token>
+
+- update xpack variables in [k8s/minikube/jobber-elasticsearch/elasticsearch.yaml] env section to support kibana.
+- [k8s/minikube/jobber-elasticsearch] kubectl apply -f elasticsearch.yaml
+- [k8s/minikube/jobber-kibana] kubectl delete -f . + kubectl apply -f .
+- http://kibana.jobberapp.local + verify http://kibana.jobberapp.local/app/fleet/agents 

@@ -33,8 +33,17 @@ spec:
             - name: ELASTICSEARCH_USERNAME
               value: kibana_system
             - name: ELASTICSEARCH_PASSWORD
-              # value: 'admin1234'
-              valueFrom:
-                secretKeyRef:
-                  name: jobber-backend-secret
-                  key: jobber-elasticsearch-password
+              value: 'kibana'
+              # valueFrom:
+                # secretKeyRef:
+                  # name: jobber-backend-secret
+                  # key: jobber-elasticsearch-password
+            - name: ELASTICSEARCH_SERVICEACCOUNT_TOKEN
+              value: AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6aENBc3BJZENUbE9JeWRBS20yY0VIUQ
+          volumeMounts:
+            - name: kibana-config
+              mountPath: /usr/share/kibana/config
+      volumes:
+      - name: kibana-config
+        configMap:
+          name: kibana-config
