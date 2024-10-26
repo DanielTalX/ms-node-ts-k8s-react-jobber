@@ -1,4 +1,6 @@
 ## Add/Apply global ingress-nginx-controller
+- https://kubernetes.github.io/ingress-nginx/deploy/ - #quick-start - If you don't have Helm
+- https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/cloud/deploy.yaml
 - [minikube/ingress] kubectl apply -f ingress-depl.yaml
 
 ## Add/Apply API gateway ingress

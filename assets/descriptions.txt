@@ -88,6 +88,8 @@ Section 16: Kubernetes Deployment on Minikube
     - Redis, Rabbitmq, MySql, Postgres, MongoDB, ElasticSearch, Kibana Kubernetes Objects
     - Using secrets 
     - MS (Review, Order, Chat, Gig, Users, Auth, Notification, Gateway) Kubernetes Objects
-    - Add/Apply global ingress-nginx-conntroller + API gateway ingress
+    - Add/Apply global ingress-nginx-controller + API gateway ingress
     - Generate self-signed certificates + Create gateway tls secret
-    - Kibana ingress, kibana configmap, change kibana user & passwrod
+    - Kibana ingress, kibana configmap, change kibana user & password
+    - ElasticSearch Heartbeat & Metricbeat Objects
+    - Port forward to access MySql & MongoDB
