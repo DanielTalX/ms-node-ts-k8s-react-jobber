@@ -93,3 +93,10 @@ Section 16: Kubernetes Deployment on Minikube
     - Kibana ingress, kibana configmap, change kibana user & password
     - ElasticSearch Heartbeat & Metricbeat Objects
     - Port forward to access MySql & MongoDB
+Section 17: Local CI/CD with Jenkins
+    - Jenkins docker service & Jenkins agent docker service
+    - Add Jenkins as node
+    - Install docker on jenkins agent
+    - Install Jenkins plugins
+    - Create Kubernetes (Minikube) default token for jenkins
+    - Review service jenkins pipeline    

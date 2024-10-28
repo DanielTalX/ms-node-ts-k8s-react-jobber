@@ -448,6 +448,31 @@ services:
     networks:
       - elastic
 
+  # master/leader
+  jenkins:
+    container_name: jenkins_container
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - ./docker-volumes/jenkins_compose/jenkins_configuration:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+  # slave/follower 
+  jenkins-agent:
+    container_name: jenkins_agent_container
+    image: jenkins/ssh-agent:jdk11
+    privileged: true
+    user: root
+    expose:
+      - 22
+    # [volumes/docker-volumes/jenkins_compose]: ssh-keygen -t rsa -f jenkins_agent
+    # copy the content of jenkins_agent.pub as a value here.
+    environment:
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa jenkins_agent.pub content
+  
 networks:
   elastic:
     name: elastic

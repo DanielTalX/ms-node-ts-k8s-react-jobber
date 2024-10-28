@@ -1,0 +1,54 @@
+namespace = "production"
+serviceName = "jobber-review"
+service = "Jobber Reviews"
+
+pipeline {
+  agent {
+    label 'Jenkins-Agent'
+  }
+
+  tools {
+    nodejs "NodeJS"
+    dockerTool "Docker"
+  }
+
+  environment {
+    DOCKER_CREDENTIALS = credentials("dockerhub")
+    IMAGE_NAME = "dtaldockerid" + "/" + "jobber-review"
+    IMAGE_TAG = "stable-${BUILD_NUMBER}"
+  }
+
+  stages {
+    stage("Cleanup Workspace") {
+      steps {
+        cleanWs()
+      }
+    }
+
+    stage("Prepare Environment") {
+      steps {
+        git branch: 'dev-sec17-local_ci_cd_with_jenkins', credentialsId: 'github', url: 'https://github.com/DanielTalX/ms-node-ts-k8s-react-jobber/'
+        sh 'npm --prefix jobberapp/microservices/8-review-service install'
+      }
+    }
+
+    stage("Build and Push") {
+      steps {
+        sh 'docker login -u $DOCKERHUB_CREDENTIAL_USR --password $DOCKERHUB_CREDENTIALS_PSW'
+        sh "docker build -t $IMAGE_NAME ."
+        sh "docker tag $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG"
+        sh "docker tag $IMAGE_NAME $IMAGE_NAME:stable"
+        sh "docker push $IMAGE_NAME:$IMAGE_TAG"
+        sh "docker push $IMAGE_NAME:stable"
+      }
+    }
+
+    stage("Clean Artifacts") {
+      steps {
+        sh "docker rmi $IMAGE_NAME:$IMAGE_TAG"
+        sh "docker rmi $IMAGE_NAME:stable"
+      }
+    }
+
+  }
+}
